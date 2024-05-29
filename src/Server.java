@@ -120,18 +120,6 @@ public class Server {
         }
     }
 
-    public void handleApproval(String key, String response, ObjectOutputStream output) throws IOException {
-        ObjectOutputStream requester = keyClientMap.get(key + "_requester");
-        if ("yes".equals(response)) {
-            String value = objectMap.get(key);
-            requester.writeObject("Request approved. Object value: " + value);
-        } else {
-            requester.writeObject("Request denied.");
-        }
-        keyClientMap.remove(key + "_requester");  // Curățăm referința la solicitant
-    }
-
-
     public synchronized void addObject(String key, String value, ObjectOutputStream output) throws IOException {
         String existingValue = objectMap.putIfAbsent(key, value);
         if (existingValue == null) {
